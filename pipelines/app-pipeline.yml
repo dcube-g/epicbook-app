@@ -1,31 +1,30 @@
 trigger:
-branches:
-include:
-- main
+  branches:
+    include:
+      - main
 
 pool:
-vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-latest'
 
 steps:
 
-* task: DownloadSecureFile@1
+- task: DownloadSecureFile@1
   name: sshkey
   inputs:
-  secureFile: eb-prod-ssh-key.pem
+    secureFile: eb-prod-ssh-key.pem
 
-* script: |
-  sudo apt-get update
-  sudo apt-get install -y ansible
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y ansible
   displayName: Install Ansible
 
-* script: |
-  mkdir -p ~/.ssh
-  cp "$(sshkey.secureFilePath)" ~/.ssh/eb-prod-ssh-key.pem
-  chmod 600 ~/.ssh/eb-prod-ssh-key.pem
-  ssh-keyscan -H 20.198.77.144 >> ~/.ssh/known_hosts
+- script: |
+    mkdir -p ~/.ssh
+    cp "$(sshkey.secureFilePath)" ~/.ssh/eb-prod-ssh-key.pem
+    chmod 600 ~/.ssh/eb-prod-ssh-key.pem
+    ssh-keyscan -H 20.198.77.144 >> ~/.ssh/known_hosts
   displayName: Prepare SSH
 
-* script: |
-  ansible-playbook ansible/playbook.yml -i ansible/inventory-prod.ini
+- script: |
+    ansible-playbook ansible/playbook.yml -i ansible/inventory-prod.ini
   displayName: Deploy EpicBook
-
