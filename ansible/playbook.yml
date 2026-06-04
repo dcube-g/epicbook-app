@@ -1,37 +1,50 @@
----
-- name: Deploy EpicBook Application
-  hosts: epicbook_servers
+- name: Deploy EpicBook Application to Production
+  hosts: role_epicbook_web           # Uses the dynamic inventory tag group we defined
   become: yes
+  vars:
+    app_dir: "/opt/epicbook"
+    log_dir: "/var/log/epicbook"
 
   tasks:
-
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-
-    - name: Install Java 17
-      apt:
-        name: openjdk-17-jdk
-        state: present
-
-    - name: Install Nginx
-      apt:
-        name: nginx
-        state: present
-
-    - name: Create application directory
-      file:
-        path: /opt/epicbook
+    - name: Ensure application directory exists
+      # The file module sets directory permissions securely
+      # 0755 allows owner to write, others to read/execute
+      ansible.builtin.file:
+        path: "{{ app_dir }}"
         state: directory
         mode: '0755'
 
-    - name: Create log directory
-      file:
-        path: /var/log/epicbook
+    - name: Ensure log directory exists
+      ansible.builtin.file:
+        path: "{{ log_dir }}"
         state: directory
         mode: '0755'
 
-    - name: Restart Nginx
-      service:
-        name: nginx
+    - name: Deploy EpicBook application binary
+      # Copies the locally built Java artifact up to our cloud target
+      ansible.builtin.copy:
+        src: "../target/epicbook-1.0.0.jar"
+        dest: "{{ app_dir }}/epicbook.jar"
+        mode: '0755'
+      notify: Trigger Systemd Daemon Reload # Handlers prevent unnecessary restarts
+
+    - name: Configure Systemd service descriptor
+      # Deploys the service file that manages our application's background execution
+      ansible.builtin.copy:
+        src: "../systemd/epicbook.service"
+        dest: "/etc/systemd/system/epicbook.service"
+        mode: '0644'
+      notify: Trigger Systemd Daemon Reload
+
+  handlers:
+    - name: Trigger Systemd Daemon Reload
+      # This block ONLY runs if a file changes (improving deployment speed)
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      notify: Manage EpicBook Service State
+
+    - name: Manage EpicBook Service State
+      ansible.builtin.systemd:
+        name: epicbook
+        enabled: yes
         state: restarted

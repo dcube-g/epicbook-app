@@ -1,0 +1,17 @@
+[Unit]
+Description=EpicBook Spring Boot Application
+After=network.target
+
+[Service]
+User=azureuser
+WorkingDirectory=/opt/epicbook
+ExecStart=/usr/bin/java -jar /opt/epicbook/epicbook.jar
+SuccessExitStatus=143
+Restart=always
+RestartSec=5
+
+StandardOutput=append:/var/log/epicbook/application.log
+StandardError=append:/var/log/epicbook/application.log
+
+[Install]
+WantedBy=multi-user.target

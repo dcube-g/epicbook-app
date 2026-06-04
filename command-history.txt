@@ -1,0 +1,334 @@
+    1  sudo apt update
+    2  sudo apt install -y ansible
+    3  ansible --version
+    4  sudo apt update
+    5  sudo apt install -y ansible
+    6  ansible --version
+    7  ssh -i /c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem azureuser@20.198.77.144
+    8  ssh-keygen -lf /c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem
+    9  cat keys/eb-prod-ssh-key.pub
+   10  clear
+   11  find /mnt/c -name "eb-prod-ssh-key.pem" 2>/dev/null
+   12  ssh -i /mnt/c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem azureuser@20.198.77.144
+   13  chmod 600 /mnt/c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem
+   14  ls -l /mnt/c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem
+   15  ssh -i /mnt/c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem azureuser@20.198.77.144
+   16  mkdir -p ~/.ssh
+   17  cp /mnt/c/Users/pandora/EpicBook/keys/eb-prod-ssh
+   18  mkdir -p ~/.ssh
+   19  cp /mnt/c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem ~/.ssh/
+   20  chmod 600 ~/.ssh/eb-prod-ssh-key.pem
+   21  ls -l ~/.ssh/eb-prod-ssh-key.pem
+   22  mkdir -p ~/.ssh
+   23  cp /mnt/c/Users/pandora/EpicBook/keys/eb-prod-ssh-key.pem ~/.ssh/
+   24  chmod 600 ~/.ssh/eb-prod-ssh-key.pem
+   25  ls -l ~/.ssh/eb-prod-ssh-key.pem
+   26  ssh -i ~/.ssh/eb-prod-ssh-key.pem azureuser@20.198.77.144
+   27  ansible --version
+   28  apt update
+   29  apt install -y ansible
+   30  ls -l ~/.ssh/eb-prod-ssh-key.pem
+   31  cat /mnt/c/DevOps/EpicBook-Platform/ansible/inventory-prod.ini
+   32  cat > /mnt/c/DevOps/EpicBook-Platform/ansible/inventory-prod.ini <<'EOF'
+[epicbook_servers]
+vm-eb-prod-01 ansible_host=20.198.77.144
+
+[epicbook_servers:vars]
+ansible_user=azureuser
+ansible_connection=ssh
+ansible_port=22
+ansible_ssh_private_key_file=/root/.ssh/eb-prod-ssh-key.pem
+EOF
+
+   33  cat /mnt/c/DevOps/EpicBook-Platform/ansible/inventory-prod.ini
+   34  ansible --version
+   35  cd /mnt/c/DevOps/EpicBook-Platform
+   36  ansible epicbook_servers -i ansible/inventory-prod.ini -m ping
+   37  cd /mnt/c/DevOps/EpicBook-Platform
+   38  ansible-playbook -i ansible/inventory-prod.ini ansible/playbook.yml
+   39  ssh -i ~/.ssh/eb-prod-ssh-key.pem azureuser@20.198.77.144
+   40  cd /mnt/c/DevOps/EpicBook-Platform
+   41  find . -type f | grep -E "pom.xml|build.gradle|Dockerfile|package.json|.*\.jar$"
+   42  find . -maxdepth 2 -type d
+   43  git clone https://proddcube@dev.azure.com/proddcube/EpicBook-Platform/_git/epicbook-app
+   44  cd /mnt/c/DevOps/epicbook-app
+   45  pwd
+   46  ls -la
+   47  find . -maxdepth 3 -type f
+   48  find . -type f | grep -E "pom.xml|build.gradle|Dockerfile|package.json|.*\.jar$"
+   49  git log --oneline -5
+   50  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+   51  git log --oneline --all
+   52  ls -la
+   53  cat README.md
+   54  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+   55  git branch -a
+   56  clear
+   57  cd /mnt/c/DevOps
+   58  git clone https://dev.azure.com/proddcube/EpicBook-Platform/_git/theepicbook
+   59  clear
+   60  cd /mnt/c/DevOps/epicbook-app
+   61  mkdir -p ansible
+   62  mkdir -p ansible/roles
+   63  mkdir -p app
+   64  mkdir -p nginx
+   65  mkdir -p pipelines
+   66  cat > README.md <<'EOF'
+# EpicBook Application Deployment
+
+This repository contains:
+
+- Ansible playbooks
+- Nginx configuration
+- Azure DevOps application pipeline
+
+Deployment target:
+
+- Azure VM provisioned by Terraform
+- Ubuntu 22.04
+- Java 17
+- Nginx
+
+Workflow:
+
+Azure DevOps → Ansible → Azure VM
+EOF
+
+   67  git add README.md
+   68  git commit -m "Update application repository README"
+   69  git push origin main
+   70  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+   71  git status
+   72  cat > README.md <<'EOF'
+# EpicBook Application Deployment
+
+This repository contains:
+
+- Ansible playbooks
+- Nginx configuration
+- Azure DevOps application pipeline
+
+Deployment target:
+
+- Azure VM provisioned by Terraform
+- Ubuntu 22.04
+- Java 17
+- Nginx
+
+Workflow:
+
+Azure DevOps -> Ansible -> Azure VM
+EOF
+
+   73  git add README.md
+   74  git commit -m "Update application repository README"
+   75  git push origin main
+   76  git remote -v
+   77  pwd
+   78  git remote -v
+   79  git status
+   80  git log --oneline -3
+   81  git push origin main
+   82  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+   83  mkdir -p ansible
+   84  mkdir -p ansible/roles
+   85  mkdir -p nginx
+   86  mkdir -p pipelines
+   87  find . -maxdepth 2 -type d
+   88  git add .
+   89  git commit -m "Create application deployment structure"
+   90  git push origin main
+   91  find . -maxdepth 2 -type d
+   92  git log --oneline -3
+   93  clear
+   94  cat > ansible/inventory-prod.ini <<'EOF'
+[epicbook_servers]
+
+vm-eb-prod-01 ansible_host=20.198.77.144
+
+[epicbook_servers:vars]
+
+ansible_user=azureuser
+ansible_connection=ssh
+ansible_port=22
+ansible_ssh_private_key_file=~/.ssh/eb-prod-ssh-key.pem
+EOF
+
+   95  cat > ansible/playbook.yml <<'EOF'
+---
+- name: Deploy EpicBook Application
+  hosts: epicbook_servers
+  become: yes
+
+  tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java 17
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Create application directory
+      file:
+        path: /opt/epicbook
+        state: directory
+        mode: '0755'
+
+    - name: Create log directory
+      file:
+        path: /var/log/epicbook
+        state: directory
+        mode: '0755'
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+EOF
+
+   96  cat > nginx/epicbook.conf <<'EOF'
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}
+EOF
+
+   97  cat > pipelines/app-pipeline.yml <<'EOF'
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+- task: DownloadSecureFile@1
+  name: sshkey
+  inputs:
+    secureFile: eb-prod-ssh-key.pem
+
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y ansible
+  displayName: Install Ansible
+
+- script: |
+    ansible-playbook ansible/playbook.yml \
+      -i ansible/inventory-prod.ini
+  displayName: Deploy EpicBook
+EOF
+
+   98  find ansible nginx pipelines -type f
+   99  git add .
+  100  git commit -m "Add application deployment automation"
+  101  git push origin main
+  102  git log --oneline -3
+  103  find ansible nginx pipelines -type f
+  104  clear
+  105  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+  106  cat ansible/inventory-prod.ini
+  107  cat > ansible/inventory-prod.ini <<'EOF'
+[epicbook_servers]
+
+vm-eb-prod-01 ansible_host=20.198.77.144
+
+[epicbook_servers:vars]
+
+ansible_user=azureuser
+ansible_connection=ssh
+ansible_port=22
+ansible_ssh_private_key_file=~/.ssh/eb-prod-ssh-key.pem
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+EOF
+
+  108  git add ansible/inventory-prod.ini
+  109  git commit -m "Disable strict host key checking for Ansible"
+  110  git push origin main
+  111  nano epicbook-app/pipelines/app-pipeline.yml
+  112  ls -l
+  113  cd pipelines/
+  114  ls
+  115  vi app-pipeline.yml
+  116  git add pipelines/app-pipeline.yml
+  117  git commit -m "Use Azure DevOps secure file for SSH key"
+  118  git push origin main
+  119  pwd
+  120  git log --oneline -3
+  121  cat pipelines/app-pipeline.yml
+  122  echo "--------------------"
+  123  cat ansible/inventory-prod.ini
+  124  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+  125  pwd
+  126  clear
+  127  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+  128  pwd
+  129  cat pipelines/app-pipeline.yml
+  130  echo "----------------"
+  131  cat ansible/inventory-prod.ini
+  132  cd pipelines/
+  133  vi app-pipeline.yml
+  134  git add pipelines/app-pipeline.yml
+  135  git commit -m "Fix application pipeline YAML"
+  136  git push origin main
+  137  clear
+  138  git status
+  139  git add app-pipeline.yml
+  140  git commit -m "Fix application pipeline YAML"
+  141  git push origin main
+  142  git log --oneline -3
+  143  echo "================ PIPELINE ================"
+  144  cat pipelines/app-pipeline.yml
+  145  echo "================ INVENTORY ================"
+  146  cat ansible/inventory-prod.ini
+  147  cat pipelines/app-pipeline.yml
+  148  cat ansible/inventory-prod.ini
+  149  pwd
+  150  ls -l
+  151  cat app-pipeline.yml
+  152  cd ..
+  153  pwd
+  154  cat pipelines/app-pipeline.yml
+  155  cat ansible/inventory-prod.ini
+  156  clear
+  157  nano pipelines/app-pipeline.yml
+  158  cat pipelines/app-pipeline.yml
+  159  nano pipelines/app-pipeline.yml
+  160  cat pipelines/app-pipeline.yml
+  161  git status
+  162  git add pipelines/app-pipeline.yml
+  163  git commit -m "Fix Azure DevOps pipeline syntax"
+  164  git push origin main
+  165  git log --oneline -3
+  166  cd /mnt/c/DevOps/EpicBook-Platform/epicbook-app
+  167  mkdir -p src/main/java/com/epicbook
+  168  mkdir -p src/main/resources
+  169  find src -type d
+  170  nano pom.xml
+  171  nano src/main/java/com/epicbook/EpicBookApplication.java
+  172  nano src/main/java/com/epicbook/HomeController.java
+  173  nano src/main/resources/application.properties
+  174  ls -l target
+  175  find target -name "*.jar"
+  176  ls -l target
+  177  PS C:\Users\pandora> ssh -i ~/.ssh/eb-prod-ssh-key.pem azureuser@20.198.77.144
+  178  ssh : The term 'ssh' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the
+  179  spelling of the name, or if a path was included, verify that the path is correct and try again.
+  180  At line:1 char:1
+  181  + ssh -i ~/.ssh/eb-prod-ssh-key.pem azureuser@20.198.77.144
+  182  + ~~~
+  183  history | tail -500 > command-history.txt
